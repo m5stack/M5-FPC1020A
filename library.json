@@ -1,5 +1,5 @@
 {
-  "name": "M5_Finger",
+  "name": "M5_FPC1020A",
   "description": "Library for Finger Unit",
   "keywords": "Finger Unit",
   "authors": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/m5stack/M5_Finger.git"
+    "url": "https://github.com/m5stack/M5_FPC1020A.git"
   },
   "version": "0.0.1",
   "framework": "arduino",

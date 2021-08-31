@@ -5,7 +5,7 @@
 typedef unsigned char uint8_t ;
 typedef unsigned short uint16_t;
 
-#include "M5_Finger.h"
+#include "M5_FPC1020A.h"
 #include "Arduino.h"
 
 

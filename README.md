@@ -1,4 +1,4 @@
-# M5_Finger
+# M5_FPC1020A
 
 ## Overview
 
@@ -10,4 +10,4 @@ M5Stack-**UNIT FINGER**
 
 ## License
 
-[M5_Finger - MIT](LICENSE)
+[M5_FPC1020A - MIT](LICENSE)

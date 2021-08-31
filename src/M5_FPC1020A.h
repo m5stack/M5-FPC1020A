@@ -1,5 +1,5 @@
-#ifndef __M5_Finger_H__
-#define __M5_Finger_H__
+#ifndef __M5_FPC1020A_H__
+#define __M5_FPC1020A_H__
  
 #define TRUE  1
 #define FALSE 0

@@ -1,6 +1,8 @@
 #ifndef __M5_FPC1020A_H__
 #define __M5_FPC1020A_H__
  
+#include "Arduino.h"
+
 #define TRUE  1
 #define FALSE 0
  
@@ -49,21 +51,26 @@
 
 class FingerPrint {
 
-  public:
-        FingerPrint(void);
-        uint8_t fpm_sendAndReceive(uint16_t delayMs);
-        uint8_t fpm_sleep(void);
-        uint8_t fpm_setAddMode(uint8_t fpm_mode);
-        uint8_t fpm_readAddMode(void);
-        uint16_t fpm_getUserNum(void);
-        uint8_t fpm_deleteAllUser(void);
-        uint8_t fpm_deleteUser(uint8_t userNum);
-        uint8_t fpm_addUser(uint8_t userNum, uint8_t userPermission);
-        uint8_t fpm_compareFinger(void);
-  public:
-        uint8_t TxBuf[9];
-        uint8_t RxBuf[9];
-        uint8_t RxCnt;
+      private:
+            HardwareSerial * _serial;
+            uint8_t tx;
+            uint8_t rx;
+      public:
+            FingerPrint();
+            void begin(HardwareSerial  *_Serial = &Serial2, uint8_t rx = 16, uint8_t tx = 17);
+            uint8_t fpm_sendAndReceive(uint16_t delayMs);
+            uint8_t fpm_sleep(void);
+            uint8_t fpm_setAddMode(uint8_t fpm_mode);
+            uint8_t fpm_readAddMode(void);
+            uint16_t fpm_getUserNum(void);
+            uint8_t fpm_deleteAllUser(void);
+            uint8_t fpm_deleteUser(uint8_t userNum);
+            uint8_t fpm_addUser(uint8_t userNum, uint8_t userPermission);
+            uint8_t fpm_compareFinger(void);
+            uint8_t fpm_getUserId(void);
+      public:
+            uint8_t TxBuf[9];
+            uint8_t RxBuf[9];
 };
 
 

@@ -1,17 +1,19 @@
-// /*
-// *******************************************************************************
-// * Copyright (c) 2021 by M5Stack
-// *                  Equipped with M5Tough sample source code
-// *                          配套  M5Tough 示例源代码
-// * Visit the website for more information：https://docs.m5stack.com/en/core/tough
-// * 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/tough
-// *
-// * describe：Hello World
-// * date：2021/7/21
-// *******************************************************************************
+/*
+*******************************************************************************
+* Copyright (c) 2021 by M5Stack
+*                  Equipped with M5Tough sample source code
+*                          配套  M5Tough 示例源代码
+* Visit the website for more information：https://docs.m5stack.com/en/core/tough
+* 获取更多资料请访问：https://docs.m5stack.com/zh_CN/core/tough
+*
+* describe：Finger Unit example
+* date：2021/7/21
+*******************************************************************************
+Description: FINGER UNIT use case: Press the left button to enter the fingerprint entry mode. Press the middle button to enter the fingerprint identification mode.
+FINGER UNIT 使用案例按左键进入指纹录入模式，短按中间键进入指纹识别模式。
+*/
 
 #include <M5Stack.h>
-
 #include "M5_FPC1020A.h"
 
 FingerPrint FP_M;

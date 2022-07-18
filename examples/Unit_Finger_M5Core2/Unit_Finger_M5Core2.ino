@@ -3,29 +3,28 @@
 * Copyright (c) 2021 by M5Stack
 *                  Equipped with M5Core2 sample source code
 *                          配套  M5Core2 示例源代码
-* Visit the website for more information: https://docs.m5stack.com/en/core/core2
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/core/core2
+* Visit for more information: https://docs.m5stack.com/en/unit/finger
+* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/finger
 *
-* Describe: Finger Unit example
-* Date: 2021/10/28
+* Product: Finger Unit example
+* Date: 2022/7/18
 *******************************************************************************
-Description: FINGER UNIT use case: Press the left button to enter the
-fingerprint entry mode. Press the middle button to enter the fingerprint
-identification mode，Right click to delete all saved users FINGER UNIT
+Press the left button to enter thefingerprint entry mode. Press the middle
+button to enter the fingerprint identification mode，
+Right click to delete all saved users FINGER UNIT
 使用案例按左键进入指纹录入模式，短按中间键进入指纹识别模式，按下右键删除所有保存的用户
 */
 
 #include <M5Core2.h>
-
 #include "M5_FPC1020A.h"
 
-FingerPrint FP_M;
+FingerPrint Finger;
 
 void setup() {
     M5.begin();
     M5.Lcd.setTextColor(GREEN);
     M5.Lcd.setTextSize(2);
-    FP_M.begin();
+    Finger.begin();
     M5.Lcd.drawString("Add User", 10, 210);
     M5.Lcd.drawString("Verify", 125, 210);
     M5.Lcd.drawString("Del User", 220, 210);
@@ -50,7 +49,7 @@ void loop() {
         M5.Lcd.println("Put Your Finger on the sensor");
         M5.Lcd.println("wating....");
 
-        res1 = FP_M.fpm_addUser(22, 1);  //(user_num, userPermission)
+        res1 = Finger.fpm_addUser(22, 1);  //(user_num, userPermission)
         if (res1 == ACK_SUCCESS) {
             M5.Lcd.println("Success");
             Serial.println("Success");
@@ -63,15 +62,15 @@ void loop() {
     if (M5.BtnB.wasPressed()) {
         M5.Lcd.fillRect(0, 0, 320, 100, BLACK);
         Serial.println("Start Verify Fingerprint");
-        res1 = FP_M.fpm_compareFinger();
+        res1 = Finger.fpm_compareFinger();
         if (res1 == ACK_SUCCESS) {
             Serial.println("Success");
             Serial.print("User ID: ");
-            Serial.println(FP_M.fpm_getUserId());
+            Serial.println(Finger.fpm_getUserId());
 
             M5.Lcd.println("Success");
             M5.Lcd.print("User ID: ");
-            M5.Lcd.println(FP_M.fpm_getUserId());
+            M5.Lcd.println(Finger.fpm_getUserId());
 
         } else {
             Serial.println("No Such User");
@@ -84,7 +83,7 @@ void loop() {
         M5.Lcd.fillRect(0, 0, 320, 100, BLACK);
         Serial.println("Start Delete Fingerprint");
         M5.Lcd.println("Start Delete Fingerprint");
-        res1 = FP_M.fpm_deleteAllUser();
+        res1 = Finger.fpm_deleteAllUser();
         if (res1 == ACK_SUCCESS) {
             Serial.println("Delete All User Successful");
             M5.Lcd.println("Delete All User Successful");

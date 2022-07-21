@@ -4,7 +4,7 @@
 
 ### SKU:U008 & U074 & A066
 
-M5Stack **Unit&Module FINGER** integrated the FPC1020A capacitive fingerprint recognition module and Fingerprint recognition algorithm chip.
+M5Stack **Unit & Hat & Module FINGER** integrated the FPC1020A capacitive fingerprint recognition module and Fingerprint recognition algorithm chip.
 
 ## Related Link
 

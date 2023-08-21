@@ -1,5 +1,8 @@
 # M5-FPC1020A
 
+[![Arduino Lint](https://github.com/m5stack/M5-FPC1020A/actions/workflows/Arduino-Lint-Check.yml/badge.svg)](https://github.com/m5stack/M5-FPC1020A/actions/workflows/Arduino-Lint-Check.yml)
+[![Clang Format](https://github.com/m5stack/M5-FPC1020A/actions/workflows/clang-format-check.yml/badge.svg)](https://github.com/m5stack/M5-FPC1020A/actions/workflows/clang-format-check.yml)
+
 ## Overview
 
 ### SKU:U008 & U074 & A066

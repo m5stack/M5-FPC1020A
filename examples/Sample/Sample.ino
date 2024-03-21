@@ -1,13 +1,13 @@
 
 /**
- * @file Unit_Finger_M5Atom.ino
+ * @file Sample.ino
  * @author SeanKwok (shaoxiang@m5stack.com)
  * @brief
  * @version 0.1
  * @date 2024-03-20
  *
  *
- * @Hardwares: M5Atom + Unit Finger
+ * @Hardwares: M5Core + Unit Finger
  * @Platform Version: Arduino M5Stack Board Manager v2.1.1
  * @Dependent Library:
  * M5_FPC1020A: https://github.com/m5stack/M5-FPC1020A
@@ -35,18 +35,17 @@ void setup() {
     // wait for unit boot
     delay(100);
     Serial.begin(115200);
-    while (!finger.begin(&Serial2, 32, 26, 19200)) {
+    while (!finger.begin(&Serial2, 16, 17, 19200)) {
         Serial.println("FPC1020A not found");
         delay(1000);
     }
 
     Serial.println("Delete All User");
     finger.delAllFinger();
-    delay(1000);
+
     Serial.println("Start Add User Process");
     Serial.println("Now Keep Your Finger on the Sensor...");
     add_user_process(new_user_id, 1);
-    Serial.println("add user success");
     // if you wanna check the debug message, you can enable it
     // finger.enableDebug(&Serial);
 

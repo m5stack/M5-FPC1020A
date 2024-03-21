@@ -1,63 +1,97 @@
-/*
-*******************************************************************************
-* Copyright (c) 2021 by M5Stack
-*                  Equipped with M5StickCPlus sample source code
-*                          配套  M5StickCPlus 示例源代码
-* Visit for more information: https://docs.m5stack.com/en/unit/finger
-* 获取更多资料请访问: https://docs.m5stack.com/zh_CN/unit/finger
-*
-* Product: Finger Unit example
-* Date: 2022/7/18
-*******************************************************************************
-FINGER UNIT use case: Press the left button to enter the fingerprint entry mode.
-Press the middle button to enter the fingerprint identification mode FINGER UNIT
-使用案例按左键进入指纹录入模式，短按中间键进入指纹识别模式
-*/
+/**
+ * @file Unit_Finger_M5StickCPlus.ino
+ * @author SeanKwok (shaoxiang@m5stack.com)
+ * @brief
+ * @version 0.1
+ * @date 2024-03-20
+ *
+ *
+ * @Hardwares: M5StickC Plus + Unit Finger
+ * @Platform Version: Arduino M5Stack Board Manager v2.1.1
+ * @Dependent Library:
+ * M5_FPC1020A: https://github.com/m5stack/M5-FPC1020A
+ */
 
-#include <M5StickCPlus.h>
+#include "M5Unified.h"
 #include "M5_FPC1020A.h"
 
-FingerPrint Finger;
+M5_FPC1020A finger;
+
+bool add_user_process(uint8_t id, uint8_t permission) {
+    M5.Lcd.fillRect(0, 0, 240, 135, BLACK);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.println("add finger process:");
+    M5.Lcd.println("put your finger on the sensor");
+    for (uint8_t i = 0; i < 6; i++) {
+        while (!finger.addFinger(id, permission, i)) {
+            Serial.printf("Finger ID: %d Finger Record:%d error\r\n", id, i);
+            Serial.println("Retry...");
+            delay(1000);
+        };
+        M5.Lcd.printf("add finger count : %d/6\r\n", i + 1);
+        Serial.printf("Finger ID: %d Finger Record:%d ok\r\n", id, i);
+    }
+    return true;
+}
 
 void setup() {
-    M5.begin();             // Init M5StickCPlus.  初始化M5StickCPlus
-    M5.Lcd.setRotation(3);  // Rotate the screen.  旋转屏幕
+    M5.begin();
+
+    M5.Lcd.setRotation(1);
     M5.Lcd.setTextColor(GREEN);
+    M5.Lcd.setTextSize(1);
+    M5.Lcd.setCursor(0, 0);
+    M5.Lcd.println("Finger Unit init...");
+    if (!finger.begin(&Serial2, 33, 32, 19200)) {
+        Serial.println("FPC1020A not found");
+        while (1) delay(1);
+    }
+    M5.Lcd.fillRect(0, 0, 240, 135, BLACK);
+    M5.Lcd.setCursor(0, 0);
     M5.Lcd.println("Finger Unit TEST");
-    M5.Lcd.println("Btn.A add a user fingerprint");
-    M5.Lcd.println("Btn.B delete all user");
-    Finger.begin(&Serial2, 32, 33);
+
+    uint8_t userNum = finger.getUserCount();
+    Serial.print("userNum:");
+    Serial.println(userNum);
+
+    M5.Lcd.println("Delete All User");
+    finger.delAllFinger();
+
+    M5.Lcd.println("Btn.A add a user");
+    M5.Lcd.println("Btn.B verify user");
 }
+
+uint8_t new_user_id = 1;
 
 void loop() {
     M5.update();
-    uint8_t res1;
-    // ButtonA: Add user.  添加用户
     if (M5.BtnA.wasPressed()) {
-        M5.Lcd.fillRect(0, 8, 160, 80, BLACK);
-        M5.Lcd.setCursor(0, 20);
-        M5.Lcd.println("Start Fingerprint Typing");
-        M5.Lcd.println("Put Your Finger on the sensor");
-        M5.Lcd.println("wating....");
-
-        res1 = Finger.fpm_addUser(22, 1);  //(user_num, userPermission)
-        if (res1 == ACK_SUCCESS)
-            M5.Lcd.println("Success");
-        else
-            M5.Lcd.println("Fail");
+        // user id: 1 ~ 0xfff
+        if (add_user_process(new_user_id, 1)) {
+            Serial.println("add user success");
+            M5.Lcd.println("add user success");
+            new_user_id++;
+        }
     }
-    // ButtonB: Matching.  匹配指纹
+
     if (M5.BtnB.wasPressed()) {
-        M5.Lcd.fillRect(0, 8, 160, 80, BLACK);
-        M5.Lcd.setCursor(0, 20);
-        M5.Lcd.println("Start Verify Fingerprint");
-        res1 = Finger.fpm_compareFinger();
-        if (res1 == ACK_SUCCESS) {
+        M5.Lcd.fillRect(0, 0, 240, 135, BLACK);
+        M5.Lcd.setCursor(0, 0);
+        uint8_t res = finger.available();
+        if (res == ACK_SUCCESS) {
             M5.Lcd.println("Success");
+            Serial.println("Success");
             M5.Lcd.print("User ID: ");
-            M5.Lcd.println(Finger.fpm_getUserId());
+            Serial.print("User ID: ");
+            M5.Lcd.println(finger.getFingerID());
+            Serial.println(finger.getFingerID());
+            M5.Lcd.print("User Permission: ");
+            Serial.print("User Permission: ");
+            M5.Lcd.println(finger.getFingerPermission());
+            Serial.println(finger.getFingerPermission());
         } else {
-            M5.Lcd.println("No Such User");
+            Serial.println("No User");
+            M5.Lcd.println("No User");
         }
     }
 }

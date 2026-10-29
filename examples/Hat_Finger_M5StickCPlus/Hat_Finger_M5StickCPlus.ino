@@ -15,7 +15,7 @@
 #include "M5Unified.h"
 #include "M5_FPC1020A.h"
 
-M5_FPC1020A finger;
+FingerPrint finger;
 
 bool add_user_process(uint8_t id, uint8_t permission) {
     M5.Lcd.fillRect(0, 0, 240, 135, BLACK);
@@ -23,7 +23,7 @@ bool add_user_process(uint8_t id, uint8_t permission) {
     M5.Lcd.println("add finger process:");
     M5.Lcd.println("put your finger on the sensor");
     for (uint8_t i = 0; i < 6; i++) {
-        while (!finger.addFinger(id, permission, i)) {
+        while (!finger.fpm_addUser(id, permission)) {
             Serial.printf("Finger ID: %d Finger Record:%d error\r\n", id, i);
             Serial.println("Retry...");
             delay(1000);
@@ -42,20 +42,17 @@ void setup() {
     M5.Lcd.setTextSize(1);
     M5.Lcd.setCursor(0, 0);
     M5.Lcd.println("Finger Unit init...");
-    if (!finger.begin(&Serial2, 26, 0, 19200)) {
-        Serial.println("FPC1020A not found");
-        while (1) delay(1);
-    }
+    finger.begin(&Serial2, 26, 0);
     M5.Lcd.fillRect(0, 0, 240, 135, BLACK);
     M5.Lcd.setCursor(0, 0);
     M5.Lcd.println("Finger Unit TEST");
 
-    uint8_t userNum = finger.getUserCount();
+    uint8_t userNum = finger.fpm_getUserNum();
     Serial.print("userNum:");
     Serial.println(userNum);
 
     M5.Lcd.println("Delete All User");
-    finger.delAllFinger();
+    finger.fpm_deleteAllUser();
 
     M5.Lcd.println("Btn.A add a user");
     M5.Lcd.println("Btn.B verify user");
@@ -77,18 +74,14 @@ void loop() {
     if (M5.BtnB.wasPressed()) {
         M5.Lcd.fillRect(0, 0, 240, 135, BLACK);
         M5.Lcd.setCursor(0, 0);
-        uint8_t res = finger.available();
+        uint8_t res = finger.fpm_compareFinger();
         if (res == ACK_SUCCESS) {
             M5.Lcd.println("Success");
             Serial.println("Success");
             M5.Lcd.print("User ID: ");
             Serial.print("User ID: ");
-            M5.Lcd.println(finger.getFingerID());
-            Serial.println(finger.getFingerID());
-            M5.Lcd.print("User Permission: ");
-            Serial.print("User Permission: ");
-            M5.Lcd.println(finger.getFingerPermission());
-            Serial.println(finger.getFingerPermission());
+            M5.Lcd.println(finger.fpm_getUserId());
+            Serial.println(finger.fpm_getUserId());
         } else {
             Serial.println("No User");
             M5.Lcd.println("No User");
